@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="28dp"
+    android:background="@drawable/bg_dialog">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_difficulty_title"
+        android:textAppearance="@style/TextAppearance.DialogTitle"
+        android:paddingBottom="24dp" />
+
+    <Button
+        android:id="@+id/btn_diff_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_normal"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_primary"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginBottom="12dp"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:id="@+id/btn_diff_hard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_hard"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_secondary"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginBottom="12dp"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:id="@+id/btn_diff_expert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_expert"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_secondary"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginBottom="20dp"
+        android:stateListAnimator="@null" />
+
+    <!-- Cancel -->
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textAppearance="@style/TextAppearance.StatLabel"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+</LinearLayout>

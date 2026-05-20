@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/background"
+    android:padding="32dp">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.Title"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_subtitle"
+        android:textAppearance="@style/TextAppearance.StatLabel"
+        android:paddingBottom="48dp" />
+
+    <!-- Difficulty buttons -->
+    <Button
+        android:id="@+id/btn_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_normal"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_primary"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginBottom="14dp"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:id="@+id/btn_hard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_hard"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_secondary"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginBottom="14dp"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:id="@+id/btn_expert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_expert"
+        android:textAppearance="@style/TextAppearance.ButtonLabel"
+        android:background="@drawable/bg_button_secondary"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:stateListAnimator="@null" />
+
+</LinearLayout>

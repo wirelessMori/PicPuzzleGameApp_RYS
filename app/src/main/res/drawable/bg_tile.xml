@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tile button background.
+    Pressed state shows a slightly darker surface so taps feel responsive.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Pressed -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tile_pressed" />
+            <stroke android:width="1dp" android:color="@color/tile_stroke" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <!-- Normal -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tile_background" />
+            <stroke android:width="1dp" android:color="@color/tile_stroke" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+</selector>

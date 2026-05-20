@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Slide Puzzle</string>
+    <string name="moves">MOVES</string>
+    <string name="time">TIME</string>
+    <string name="new_game">New Game</string>
+    <string name="timer_default">0:00</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Menu -->
+    <string name="menu_subtitle">SELECT DIFFICULTY</string>
+
+    <!-- Difficulty labels -->
+    <string name="difficulty_normal">3 × 3  —  Normal</string>
+    <string name="difficulty_hard">4 × 4  —  Hard</string>
+    <string name="difficulty_expert">5 × 5  —  Expert</string>
+
+    <!-- Win dialog -->
+    <string name="dialog_solved_title">Puzzle Solved!</string>
+    <string name="dialog_difficulty_title">New Game</string>
+    <string name="play_again">Play Again</string>
+
+    <!-- Accessibility -->
+    <string name="tile_description">Tile %1$d</string>
+    <string name="blank_tile_description">Empty tile</string>
+</resources>

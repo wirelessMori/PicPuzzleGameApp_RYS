@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Background -->
+    <color name="background">#F0EDE8</color>
+
+    <!-- Board surface -->
+    <color name="board_background">#1C1C1E</color>
+
+    <!-- Tiles -->
+    <color name="tile_background">#FFFFFF</color>
+    <color name="tile_text">#1C1C1E</color>
+    <color name="tile_pressed">#E8E4DF</color>
+    <color name="tile_stroke">#D4CFCA</color>
+
+    <!-- Blank tile -->
+    <color name="blank_tile">#2C2C2E</color>
+
+    <!-- Primary accent (filled button) -->
+    <color name="accent">#E8593C</color>
+    <color name="accent_pressed">#C44A30</color>
+    <color name="accent_text">#FFFFFF</color>
+
+    <!-- Secondary button (outlined) -->
+    <color name="secondary_background">#F0EDE8</color>
+    <color name="secondary_pressed">#E0DDD8</color>
+
+    <!-- Stat cards -->
+    <color name="stat_card_background">#FFFFFF</color>
+    <color name="stat_value_text">#1C1C1E</color>
+    <color name="stat_label_text">#9E9E9E</color>
+
+    <!-- Dialog -->
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="divider">#EEEEEE</color>
+
+    <!-- System -->
+    <color name="colorPrimary">#E8593C</color>
+    <color name="colorPrimaryDark">#C44A30</color>
+    <color name="colorAccent">#E8593C</color>
+
+</resources>

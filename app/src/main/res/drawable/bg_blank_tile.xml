@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Blank tile background — dark, no stroke, so it reads as an empty slot
+    that sits recessed into the board.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/blank_tile" />
+    <corners android:radius="10dp" />
+</shape>
