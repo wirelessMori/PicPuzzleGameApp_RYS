@@ -3,15 +3,24 @@ package com.example.picpuzzleslider20_rys_jrm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,15 +42,26 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout gridBoard;
     private TextView tvMoveCount;
     private TextView tvTimer;
+    private LinearLayout layoutImageControls;
+    private Button btnToggleMode;
 
     private int currentBoardSize;
 
-    // Timer state
+    // Image feature
+    private ImageTileManager imageTileManager = null;
+    private Uri currentImageUri = null;
+    private boolean showingImage = true; // true = image tiles, false = numbers
+
+    // Timer
     private Handler timerHandler;
     private Runnable timerRunnable;
     private int secondsElapsed = 0;
     private boolean timerRunning = false;
+    private boolean gamePaused = false;
     private boolean gameOver = false;
+
+    // Photo picker launcher
+    private ActivityResultLauncher<String> imagePickerLauncher;
 
     // -------------------------------------------------------------------------
     // Lifecycle
@@ -52,18 +72,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gridBoard   = findViewById(R.id.grid_board);
-        tvMoveCount = findViewById(R.id.tv_move_count);
-        tvTimer     = findViewById(R.id.tv_timer);
+        // Bind views
+        gridBoard           = findViewById(R.id.grid_board);
+        tvMoveCount         = findViewById(R.id.tv_move_count);
+        tvTimer             = findViewById(R.id.tv_timer);
+        layoutImageControls = findViewById(R.id.layout_image_controls);
+        btnToggleMode       = findViewById(R.id.btn_toggle_mode);
 
-        Button btnNewGame = findViewById(R.id.btn_new_game);
-        btnNewGame.setOnClickListener(v -> showDifficultyDialog());
+        // Button listeners
+        findViewById(R.id.btn_new_game).setOnClickListener(v -> showDifficultyDialog());
+        findViewById(R.id.btn_choose_image).setOnClickListener(v -> openImagePicker());
+        btnToggleMode.setOnClickListener(v -> toggleDisplayMode());
+        findViewById(R.id.btn_view_image).setOnClickListener(v -> showImagePreviewDialog());
 
         timerHandler = new Handler(Looper.getMainLooper());
 
-        // Read board size passed from MenuActivity (fallback to 3x3)
-        currentBoardSize = getIntent().getIntExtra(EXTRA_BOARD_SIZE, DEFAULT_BOARD_SIZE);
+        // Register photo picker (no permission needed for photo picker on API 21+)
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) onImagePicked(uri);
+                }
+        );
 
+        // Boot up
+        currentBoardSize = getIntent().getIntExtra(EXTRA_BOARD_SIZE, DEFAULT_BOARD_SIZE);
         board = new GameBoard(currentBoardSize);
         tileButtons = new Button[currentBoardSize][currentBoardSize];
         buildGrid();
@@ -73,31 +106,113 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (timerRunning) {
+            gamePaused = true;  // remember we were mid-game
+        }
         stopTimer();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (timerRunning && !gameOver) startTimer();
+        if (gamePaused && !gameOver) {
+            gamePaused = false;
+            startTimer();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Image picking
+    // -------------------------------------------------------------------------
+
+    private void openImagePicker() {
+        imagePickerLauncher.launch("image/*");
+    }
+
+    /**
+     * Called when the user has selected an image.
+     * Slices it for the current board size and re-renders.
+     */
+    private void onImagePicked(Uri uri) {
+        currentImageUri = uri;
+        imageTileManager = new ImageTileManager(this, uri, currentBoardSize);
+
+        if (imageTileManager.isLoaded()) {
+            showingImage = true;
+            layoutImageControls.setVisibility(View.VISIBLE);
+            btnToggleMode.setText(getString(R.string.show_numbers));
+            renderBoard();
+        } else {
+            Toast.makeText(this, "Could not load image.", Toast.LENGTH_SHORT).show();
+            imageTileManager = null;
+        }
+    }
+
+    /**
+     * When the board size changes we need to re-slice the same image.
+     */
+    private void resliceImageForCurrentSize() {
+        if (currentImageUri == null) return;
+        imageTileManager = new ImageTileManager(this, currentImageUri, currentBoardSize);
+        if (!imageTileManager.isLoaded()) {
+            imageTileManager = null;
+            layoutImageControls.setVisibility(View.GONE);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Toggle number / image mode
+    // -------------------------------------------------------------------------
+
+    private void toggleDisplayMode() {
+        showingImage = !showingImage;
+        btnToggleMode.setText(showingImage
+                ? getString(R.string.show_numbers)
+                : getString(R.string.show_image));
+        renderBoard();
+    }
+
+    // -------------------------------------------------------------------------
+    // Image preview dialog
+    // -------------------------------------------------------------------------
+
+    private void showImagePreviewDialog() {
+        if (currentImageUri == null) return;
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_image_preview);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            android.view.WindowManager.LayoutParams lp =
+                    dialog.getWindow().getAttributes();
+            lp.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(lp);
+        }
+
+        ImageView iv = dialog.findViewById(R.id.iv_preview);
+        iv.setImageURI(currentImageUri);
+
+        dialog.findViewById(R.id.tv_preview_close).setOnClickListener(v -> dialog.dismiss());
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 
     // -------------------------------------------------------------------------
     // Game flow
     // -------------------------------------------------------------------------
 
-    /**
-     * Starts a fresh game at the given board size.
-     * Rebuilds the grid only if the size has changed.
-     */
     private void startNewGame(int size) {
-        gameOver = false;
+        gameOver   = false;
+        gamePaused = false;
 
         if (size != currentBoardSize) {
             currentBoardSize = size;
             board = new GameBoard(currentBoardSize);
             tileButtons = new Button[currentBoardSize][currentBoardSize];
             buildGrid();
+            resliceImageForCurrentSize();
         } else {
             board = new GameBoard(currentBoardSize);
         }
@@ -162,8 +277,8 @@ public class MainActivity extends AppCompatActivity {
                         GridLayout.spec(row, 1, GridLayout.FILL, 1f),
                         GridLayout.spec(col, 1, GridLayout.FILL, 1f)
                 );
-                params.width = 0;   // ← required for column weights to work
-                params.height = 0;  // ← required for row weights to work
+                params.width = 0;
+                params.height = 0;
                 params.setMargins(5, 5, 5, 5);
                 btn.setLayoutParams(params);
                 btn.setStateListAnimator(null);
@@ -192,21 +307,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTileView(int row, int col) {
-        Button btn = tileButtons[row][col];
-        int value  = board.getTile(row, col);
+        Button btn   = tileButtons[row][col];
+        int value    = board.getTile(row, col);
+        boolean useImage = showingImage && imageTileManager != null;
 
         if (value == 0) {
+            // Blank tile — always dark, no content
             btn.setText("");
             btn.setBackground(getDrawable(R.drawable.bg_blank_tile));
             btn.setContentDescription(getString(R.string.blank_tile_description));
             btn.setClickable(false);
-        } else {
-            btn.setText(String.valueOf(value));
-            btn.setTextAppearance(R.style.TextAppearance_TileNumber);
-            btn.setBackground(getDrawable(R.drawable.bg_tile));
-            btn.setContentDescription(getString(R.string.tile_description, value));
-            btn.setClickable(true);
+            return;
         }
+
+        btn.setClickable(true);
+        btn.setContentDescription(getString(R.string.tile_description, value));
+
+        if (useImage) {
+            Bitmap piece = imageTileManager.getTileBitmap(value);
+            if (piece != null) {
+                btn.setText("");
+                // Use BitmapDrawable as background so the image fills the tile
+                BitmapDrawable drawable = new BitmapDrawable(getResources(), piece);
+                drawable.setFilterBitmap(true);
+                btn.setBackground(drawable);
+            } else {
+                // Fallback to number if bitmap missing
+                applyNumberTile(btn, value);
+            }
+        } else {
+            applyNumberTile(btn, value);
+        }
+    }
+
+    private void applyNumberTile(Button btn, int value) {
+        btn.setText(String.valueOf(value));
+        btn.setTextAppearance(R.style.TextAppearance_TileNumber);
+        btn.setBackground(getDrawable(R.drawable.bg_tile));
     }
 
     // -------------------------------------------------------------------------
@@ -255,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // -------------------------------------------------------------------------
-    // Stats UI
+    // Stats
     // -------------------------------------------------------------------------
 
     private void updateMoveCounter() {
@@ -282,9 +419,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopTimer() {
         timerRunning = false;
-        if (timerRunnable != null) {
-            timerHandler.removeCallbacks(timerRunnable);
-        }
+        if (timerRunnable != null) timerHandler.removeCallbacks(timerRunnable);
     }
 
     private void resetTimer() {
@@ -316,13 +451,12 @@ public class MainActivity extends AppCompatActivity {
             dialog.getWindow().setAttributes(lp);
         }
 
-        TextView tvMoves = dialog.findViewById(R.id.tv_dialog_moves);
-        TextView tvTime  = dialog.findViewById(R.id.tv_dialog_time);
-        tvMoves.setText(String.valueOf(board.getMoveCount()));
-        tvTime.setText(formatTime(secondsElapsed));
+        ((TextView) dialog.findViewById(R.id.tv_dialog_moves))
+                .setText(String.valueOf(board.getMoveCount()));
+        ((TextView) dialog.findViewById(R.id.tv_dialog_time))
+                .setText(formatTime(secondsElapsed));
 
-        Button btnPlayAgain = dialog.findViewById(R.id.btn_play_again);
-        btnPlayAgain.setOnClickListener(v -> {
+        dialog.findViewById(R.id.btn_play_again).setOnClickListener(v -> {
             dialog.dismiss();
             showDifficultyDialog();
         });

@@ -27,7 +27,6 @@
         android:paddingTop="8dp"
         android:paddingBottom="16dp">
 
-        <!-- Moves card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +51,6 @@
                 android:textAppearance="@style/TextAppearance.StatLabel" />
         </LinearLayout>
 
-        <!-- Timer card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -78,8 +76,45 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Puzzle board: 3x3 GridLayout -->
-    <!-- Each cell is filled programmatically in MainActivity -->
+    <!-- Image controls row (hidden until an image is loaded) -->
+    <LinearLayout
+        android:id="@+id/layout_image_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="12dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_toggle_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/show_numbers"
+            android:textAppearance="@style/TextAppearance.ButtonLabelSmall"
+            android:background="@drawable/bg_button_secondary"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="8dp"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/btn_view_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/view_image"
+            android:textAppearance="@style/TextAppearance.ButtonLabelSmall"
+            android:background="@drawable/bg_button_secondary"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginStart="8dp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+    <!-- Puzzle board -->
     <GridLayout
         android:id="@+id/grid_board"
         android:layout_width="match_parent"
@@ -90,18 +125,40 @@
         android:background="@drawable/bg_board"
         android:padding="6dp" />
 
-    <!-- Shuffle / New Game button -->
-    <Button
-        android:id="@+id/btn_new_game"
+    <!-- Bottom button row -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/new_game"
-        android:textAppearance="@style/TextAppearance.ButtonLabel"
-        android:background="@drawable/bg_button_primary"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:stateListAnimator="@null" />
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <Button
+            android:id="@+id/btn_choose_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/choose_image"
+            android:textAppearance="@style/TextAppearance.ButtonLabelSmall"
+            android:background="@drawable/bg_button_secondary"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginEnd="8dp"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/btn_new_game"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/new_game"
+            android:textAppearance="@style/TextAppearance.ButtonLabelSmall"
+            android:background="@drawable/bg_button_primary"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginStart="8dp"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
 
 </LinearLayout>

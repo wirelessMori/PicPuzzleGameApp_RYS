@@ -6,6 +6,7 @@
     <string name="new_game">New Game</string>
     <string name="timer_default">0:00</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
 
     <!-- Menu -->
     <string name="menu_subtitle">SELECT DIFFICULTY</string>
@@ -14,6 +15,13 @@
     <string name="difficulty_normal">3 × 3  —  Normal</string>
     <string name="difficulty_hard">4 × 4  —  Hard</string>
     <string name="difficulty_expert">5 × 5  —  Expert</string>
+
+    <!-- Image feature -->
+    <string name="choose_image">Choose Image</string>
+    <string name="show_numbers">Show Numbers</string>
+    <string name="show_image">Show Image</string>
+    <string name="view_image">View Full Image</string>
+    <string name="dialog_preview_title">Reference Image</string>
 
     <!-- Win dialog -->
     <string name="dialog_solved_title">Puzzle Solved!</string>

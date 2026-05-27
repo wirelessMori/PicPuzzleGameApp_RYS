@@ -16,7 +16,6 @@
          Text appearances
          ===================================================================== -->
 
-    <!-- Screen title -->
     <style name="TextAppearance.Title" parent="TextAppearance.AppCompat">
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/stat_value_text</item>
@@ -24,14 +23,12 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <!-- Large number in stat cards -->
     <style name="TextAppearance.StatValue" parent="TextAppearance.AppCompat">
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/stat_value_text</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <!-- Small uppercase label under stat values -->
     <style name="TextAppearance.StatLabel" parent="TextAppearance.AppCompat">
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/stat_label_text</item>
@@ -39,14 +36,12 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <!-- Tile number -->
     <style name="TextAppearance.TileNumber" parent="TextAppearance.AppCompat">
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/tile_text</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <!-- Primary button label -->
     <style name="TextAppearance.ButtonLabel" parent="TextAppearance.AppCompat">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/accent_text</item>
@@ -54,24 +49,26 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <!-- Win dialog title -->
+    <!-- Slightly smaller label for buttons that share a row -->
+    <style name="TextAppearance.ButtonLabelSmall" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/accent_text</item>
+        <item name="android:letterSpacing">0.06</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
     <style name="TextAppearance.DialogTitle" parent="TextAppearance.AppCompat">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/stat_value_text</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <!-- Large stat inside the win dialog -->
     <style name="TextAppearance.DialogStat" parent="TextAppearance.AppCompat">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <!-- =====================================================================
-         Tile button style
-         Applied programmatically via context in MainActivity
-         ===================================================================== -->
     <style name="TileButton" parent="Widget.AppCompat.Button">
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/bg_tile</item>
